@@ -21,6 +21,7 @@ class Usuarios extends BaseController
             'titulo' => 'Listando os usuários',
             'usuarios' => $this->usuarioModel->findAll(),
         ];
+
         return view('Admin/Usuarios/index', $data);
     }
 
@@ -44,10 +45,10 @@ class Usuarios extends BaseController
         }
 
         return $this->response->setJSON($retorno);
-
     }
 
-    public function show($id = null){
+    public function show($id = null)
+    {
 
         $usuario = $this->buscaUsuarioOu404($id);
 
@@ -58,7 +59,8 @@ class Usuarios extends BaseController
         return view('Admin/Usuarios/show', $data);
     }
 
-    public function editar($id = null){
+    public function editar($id = null)
+    {
 
         $usuario = $this->buscaUsuarioOu404($id);
 
@@ -69,13 +71,27 @@ class Usuarios extends BaseController
         return view('Admin/Usuarios/editar', $data);
     }
 
+    public function atualizar($id = null)
+    {
+
+        if ($this->request->getPost()) {
+
+            $usuario = $this->buscaUsuarioOu404($id);
+            $post = $this->request->getPost();
+
+            $usuario->fill($post);
+            
+        } else {
+            return redirect()->back();
+        }
+    }
+
     private function buscaUsuarioOu404(int $id = null)
     {
-        if(!$id || !$usuario = $this->usuarioModel->where('id', $id)->first()){
+        if (!$id || !$usuario = $this->usuarioModel->where('id', $id)->first()) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Não encontramos o usuário $id");
         }
 
         return $usuario;
     }
-
 }

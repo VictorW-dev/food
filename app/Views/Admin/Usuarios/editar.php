@@ -23,13 +23,27 @@
 
             <div class="card-body">
 
-                <form class="forms-sample">
+                <?php if (session()->has('errors_model')) : ?>
+
+                    <ul>
+                        <?php foreach (session('errors_model') as $error) : ?>
+
+                            <li class="text-danger">
+                                <?php echo $error; ?>
+                            </li>
+
+                        <?php endforeach; ?>
+                    </ul>
+
+                <?php endif; ?>
+
+                <?php echo form_open("admin/usuarios/atualizar/$usuario->id"); ?>
 
 
-                   <?php echo $this->include('Admin/Usuarios/form'); ?>
+                <?php echo $this->include('Admin/Usuarios/form'); ?>
 
 
-                </form>
+                <?php echo form_close(); ?>
 
             </div>
         </div>

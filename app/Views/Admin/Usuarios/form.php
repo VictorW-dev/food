@@ -32,7 +32,7 @@
     </div>
 
     <div class="form-group col-md-3">
-        <label for="confirmation_password">Confirme sua senha</label>
+        <label for="confirmation_password">Confirme a senha</label>
         <input type="password" class="form-control" name="password_confirmation" id="confirmation_password">
     </div>
 
