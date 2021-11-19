@@ -18,24 +18,28 @@ class UsuarioModel extends Model
         'nome' => 'required|min_length[4]|max_length[120]',
         'email' => 'required|valid_email|is_unique[usuarios.email]',
         'cpf' => 'required|exact_length[14]|is_unique[usuarios.cpf]',
+        'telefone' => 'required',
         'password' => 'required|min_length[6]',
         'password_confirmation' => 'required_with[password]|matches[password]',
     ];
     protected $validationMessages   = [
         'nome' => [
-            'required' => 'O campo nome é obrigatório',
-            'min_length' => 'O campo nome deve ter no mínimo 4 caracteres',
-            'max_length' => 'O campo nome deve ter no máximo 120 caracteres',
+            'required' => 'O campo Nome é obrigatório',
+            'min_length' => 'O campo Nome deve ter no mínimo 4 caracteres',
+            'max_length' => 'O campo Nome deve ter no máximo 120 caracteres',
         ],
         'email' => [
-            'required' => 'O campo e-mail é obrigatório',
-            'valid_email' => 'O campo e-mail deve conter um e-mail válido',
-            'is_unique' => 'O email informado já está cadastrado',
+            'required' => 'O campo E-mail é obrigatório',
+            'valid_email' => 'O campo E-mail deve conter um e-mail válido',
+            'is_unique' => 'O E-mail informado já está cadastrado',
         ],
         'cpf' => [
             'required' => 'O campo CPF é obrigatório',
             'exact_length' => 'O campo CPF deve conter 14 caracteres',
             'is_unique' => 'O CPF informado já está cadastrado',
+        ],
+        'telefone' => [
+            'required' => 'O campo Telefone é obrigatório',
         ],
     ];
 
@@ -50,5 +54,10 @@ class UsuarioModel extends Model
             ->like('nome', $term)
             ->get()
             ->getResult();
+    }
+
+    public function desabilitaValidacaoSenha(){
+        unset($this->validationRules['password']);
+        unset($this->validationRules['password_confirmation']);
     }
 }

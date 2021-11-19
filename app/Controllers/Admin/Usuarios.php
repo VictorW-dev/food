@@ -79,8 +79,23 @@ class Usuarios extends BaseController
             $usuario = $this->buscaUsuarioOu404($id);
             $post = $this->request->getPost();
 
+            if(empty($post['password'])){
+                $this->usuarioModel->desabilitaValidacaoSenha();
+                unset($post['password']);
+                unset($post['password_confirmation']);
+            }
+
             $usuario->fill($post);
-            
+
+            if (!$usuario->hasChanged()) {
+                return redirect()->back()->with('info', 'Não há dados para serem atualizados!');
+            }
+
+            if ($this->usuarioModel->protect(false)->save($usuario)) {
+                return redirect()->to(site_url("admin/usuarios/show/$usuario->id"))->with('sucesso', "Usuário $usuario->nome atualizado com sucesso!");
+            } else {
+                return redirect()->back()->with('errors_model', $this->usuarioModel->errors())->with('atencao', "Não foi possível atualizar o usuário $usuario->nome, corrija os erros abaixo.")->withInput();
+            }
         } else {
             return redirect()->back();
         }
